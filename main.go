@@ -17,5 +17,15 @@ func main() {
 			c.String(http.StatusOK, log)
 		}
 	})
+	r.GET("/parseLog", func(c *gin.Context) {
+		from := c.Query("from")
+		to := c.DefaultQuery("to", "@")
+		if log, err := getLogfile("test.log"); err != nil {
+			c.String(http.StatusInternalServerError, err.Error())
+		} else {
+			res := parseFromTo(log, from, to)
+			c.String(http.StatusOK, "Parse result from %s to %s is:%s", from, to, stringArray2string(res))
+		}
+	})
 	r.Run() // listen and serve on 0.0.0.0:8080
 }
