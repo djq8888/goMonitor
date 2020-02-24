@@ -1,0 +1,26 @@
+<!-- templates/home.tmpl -->
+<html>
+<script charset="utf-8" src="js/home.js"></script>
+<body>
+    <p>日志分析系统</p>
+    <a href="http://127.0.0.1:8080/showFiles">
+        <button>查看所有文件</button>
+    </a>
+    <br><br>
+    <font size="3" color="black">输入日志名称</font>
+    <br>
+    <input type="text" id="filename" />
+    <input type="button" value="查看日志" onclick=javascript:showlog()>
+    <br><br>
+    <font size="3" color="black">输入解析字段</font>
+    <br>
+    <font size="3" color="black">from</font>
+    <input type="text" id="from" />
+    <br>
+    <font size="3" color="black">to</font>
+    <input type="text" id="to" />
+    <br>
+    <input type="button" value="解析日志" onclick=javascript:parselog()>
+    <br>
+</body>
+</html>

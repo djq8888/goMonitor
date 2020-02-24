@@ -2,10 +2,22 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
 func main() {
 	r := gin.Default()
+
+	//加载html模板
+	r.LoadHTMLGlob("templates/*")
+
+	//html模板调用的js
+	r.Static("/js", "js")
+
+	//主页
+	r.GET("/home", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "home.tmpl", nil)
+	})
 
 	//测试接口
 	r.GET("/test", test)
