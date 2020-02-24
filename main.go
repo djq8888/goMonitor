@@ -17,6 +17,10 @@ func main() {
 			c.String(http.StatusOK, log)
 		}
 	})
+	r.GET("/showFiles", func(c *gin.Context) {
+		res := showFiles(".")
+		c.String(http.StatusOK, res)
+	})
 	r.GET("/parseLog", func(c *gin.Context) {
 		from := c.Query("from")
 		to := c.DefaultQuery("to", "@")

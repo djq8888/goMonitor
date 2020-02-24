@@ -6,6 +6,15 @@ import (
 	"strings"
 )
 
+func showFiles(path string) string {
+	var res string
+	files, _ := ioutil.ReadDir(path)
+	for _, file := range files {
+		res += file.Name() + "\r\n"
+	}
+	return res
+}
+
 //打开日志文件并以string返回文件全部内容
 func getLogfile(filename string) (string, error) {
 	data, err := ioutil.ReadFile(filename)
