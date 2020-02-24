@@ -16,7 +16,9 @@ func main() {
 
 	//主页
 	r.GET("/home", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "home.tmpl", nil)
+		c.HTML(http.StatusOK, "home.tmpl", gin.H{
+			"serverIP":  "127.0.0.1",
+		})
 	})
 
 	//测试接口

@@ -3,14 +3,16 @@
 <script charset="utf-8" src="js/home.js"></script>
 <body>
     <p>日志分析系统</p>
-    <a href="http://127.0.0.1:8080/showFiles">
-        <button>查看所有文件</button>
-    </a>
+    <input type="button" value="查看所有文件" onclick=javascript:showfiles()>
+    <br>
+    <textarea id="files" rows="10" cols="30">
+    </textarea>
     <br><br>
     <font size="3" color="black">输入日志名称</font>
     <br>
     <input type="text" id="filename" />
-    <input type="button" value="查看日志" onclick=javascript:showlog()>
+    <br>
+    <input type="button" value="查看日志内容" onclick=javascript:showlog()>
     <br><br>
     <font size="3" color="black">输入解析字段</font>
     <br>

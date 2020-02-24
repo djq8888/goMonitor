@@ -29,9 +29,10 @@ func showLog(c *gin.Context) {
 }
 
 func parseLog(c *gin.Context) {
+	filename := c.Query("name")
 	from := c.Query("from")
 	to := c.DefaultQuery("to", "@")
-	if log, err := getLogfile("test.log"); err != nil {
+	if log, err := getLogfile(filename); err != nil {
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {
 		res := parseFromTo(log, from, to)
