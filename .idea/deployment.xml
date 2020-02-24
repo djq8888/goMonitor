@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" serverName="62.234.94.18">
+    <serverData>
+      <paths name="62.234.94.18">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/home/ubuntu/go/src/goMonitor" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+    </serverData>
+  </component>
+</project>
