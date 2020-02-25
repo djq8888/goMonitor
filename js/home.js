@@ -114,7 +114,7 @@ function parselog(){
 
                     },
                     lineColor:"#000000",//折线颜色
-                    circleColor:"blue",//折线上原点颜色
+                    circleColor:"black",//折线上原点颜色
                     yAxis:{//y轴表示什么，及绘制文本的位置
                         x:50,
                         y:11,
@@ -154,27 +154,27 @@ function lineChart(elem, data) {
                 hgridX = gridWidth * len;
             ctx.moveTo(0, hgridY);
             ctx.lineTo(hgridX, hgridY);
+            ctx.fillText(gridHeight * (4-i), hgridX, hgridY);
         }
         ctx.stroke();
 
         //绘制背景的竖线，表示每个label
-        ctx.beginPath();
-        for (var j = 0; j < len + 1; j++) {
-            var vgridX = gridWidth * j,
-                vgridY = actualHeight;
-            ctx.moveTo(vgridX, vgridY);
-            ctx.lineTo(vgridX, vgridY + 10);
-        }
-        ctx.stroke();
-        //绘制标签文字
+        // ctx.beginPath();
+        // for (var j = 0; j < len + 1; j++) {
+        //     var vgridX = gridWidth * j,
+        //         vgridY = actualHeight;
+        //     ctx.moveTo(vgridX, vgridY);
+        //     ctx.lineTo(vgridX, vgridY + 10);
+        // }
+        // ctx.stroke();
+        //绘制x轴标签
         ctx.fillStyle = data.txtSet.txtColor;
-        for (var k = 0; k < len; k++) {
+        for (var k = 0; k < len; k += Math.round(len/16)) {
             var txtX = gridWidth * (k + 0.5),
                 txtY = actualHeight + 15;
             ctx.fillText(labels[k], txtX, txtY);
         }
         ctx.fill();
-
 
         //获取画图数据的最大值用于序列换数据
         var maxValue = 0,
@@ -212,19 +212,18 @@ function lineChart(elem, data) {
             var circleX = gridWidth / 2 + gridWidth * i,
                 circleY = actualHeight - cData[i];
             ctx.moveTo(circleX, circleY); //假如不每次绘制之前确定开始绘制新路径，可以每次绘制之前移动到新的圆心
-            ctx.arc(circleX, circleY, 4, 0, Math.PI * 2, false);
+            ctx.arc(circleX, circleY, 1, 0, Math.PI * 2, false);
         }
         ctx.fill();
         //绘制坐标圆形对应的值
-        ctx.beginPath();
-        ctx.fillStyle = data.txtSet.txtColor;; //文本颜色
-        for (var i = 0; i < len; i++) {
-            var circleX = gridWidth / 2 + gridWidth * i,
-                circleY = actualHeight - cData[i];
-            ctx.fillText(values[i], circleX, circleY - 8);
-
-        }
-        ctx.fill();
+        // ctx.beginPath();
+        // ctx.fillStyle = data.txtSet.txtColor;; //文本颜色
+        // for (var i = 0; i < len; i++) {
+        //     var circleX = gridWidth / 2 + gridWidth * i,
+        //         circleY = actualHeight - cData[i];
+        //     ctx.fillText(values[i], circleX, circleY - 8);
+        // }
+        // ctx.fill();
         //绘制y轴代表什么
         ctx.fillText(data.yAxis.title, data.yAxis.x, data.yAxis.y);
         ctx.fill();
