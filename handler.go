@@ -10,9 +10,13 @@ func test(c *gin.Context) {
 	c.String(http.StatusOK, "Your goMonitor is running!")
 }
 
+func home(c *gin.Context) {
+	c.HTML(http.StatusOK, "home.tmpl", nil)
+}
+
 func showFiles(c *gin.Context) {
 	var res string
-	files, _ := ioutil.ReadDir(".")
+	files, _ := ioutil.ReadDir("log")
 	for _, file := range files {
 		res += file.Name() + "\r\n"
 	}

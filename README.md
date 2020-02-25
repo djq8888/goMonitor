@@ -13,6 +13,8 @@ html+原生js
 ## 部署方式
 ### 修改ip
 `sh setIp.sh your_server_ip`
+### 链接日志文件夹
+`ln -s your_log_path log`
 ### 编译运行
 `sh build.sh`<br>
 `./monitor`

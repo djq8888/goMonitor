@@ -10,13 +10,13 @@ function showfiles() {
                     filelist = xhr.responseText.split("\r\n");
                     var select = document.getElementById('files');
                     var options = "<option>==select one==</option>";
-            for(var i=1; i<filelist.length; i++){
-                options +='<option>'+filelist[i]+'</option>';
-            }
-            console.log(options)
-            select.innerHTML = options;
-        }
-    };
+                    for(var i=0; i<filelist.length; i++){
+                        options +='<option>'+filelist[i]+'</option>';
+                    }
+                    console.log(options)
+                    select.innerHTML = options;
+                }
+            };
     xhr.open('get','http://'+localIP+':8080/showFiles');
     xhr.send(null);
 }
