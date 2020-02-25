@@ -3,13 +3,11 @@
 <script charset="utf-8" src="js/home.js"></script>
 <body>
     <p>日志分析系统</p>
-    <input type="button" value="查看所有文件" onclick=javascript:showfiles()>
+    <input type="button" value="点击获取日志列表" onclick=javascript:showfiles()>
+    <br>
+    <select name="filelist" id="files"></select>
     <br><br>
-    <font size="3" color="black">输入日志名称</font>
-    <br>
-    <input type="text" id="filename" />
-    <br>
-    <input type="button" value="查看日志内容" onclick=javascript:showlog()>
+    <input type="button" value="点击查看选择的日志内容" onclick=javascript:showlog()>
     <br><br>
     <font size="3" color="black">内容显示框</font>
     <br>
@@ -23,7 +21,7 @@
     <font size="3" color="black">to</font>
     <input type="text" id="to" />
     <br>
-    <input type="button" value="解析日志" onclick=javascript:parselog()>
+    <input type="button" value="点击解析选择的日志" onclick=javascript:parselog()>
     <br><br>
     <body>
     <canvas id="line" width="1800" height="400"></canvas>

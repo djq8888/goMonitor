@@ -2,10 +2,19 @@ var localIP = "127.0.0.1"
 
 function showfiles() {
     var xhr=new XMLHttpRequest();
-    xhr.onreadystatechange=function () {
-        if (xhr.readyState==4){
-            //alert(xhr.responseText);
-            document.getElementById("showBox").innerHTML = xhr.responseText;
+            xhr.onreadystatechange=function () {
+                if (xhr.readyState==4){
+                    //alert(xhr.responseText);
+                    //document.getElementById("showBox").innerHTML = xhr.responseText;
+                    var filelist = new Array();
+                    filelist = xhr.responseText.split("\r\n");
+                    var select = document.getElementById('files');
+                    var options = "<option>==select one==</option>";
+            for(var i=1; i<filelist.length; i++){
+                options +='<option>'+filelist[i]+'</option>';
+            }
+            console.log(options)
+            select.innerHTML = options;
         }
     };
     xhr.open('get','http://'+localIP+':8080/showFiles');
@@ -13,7 +22,20 @@ function showfiles() {
 }
 
 function showlog(){
-    var url = "http://"+localIP+":8080/showLog?name="+document.getElementById('filename').value;
+    var select = document.getElementById('files');
+    if (select.options.length == 0)
+    {
+        alert("请先获取文件列表并选择文件！");
+        return false;
+    }
+    var index = select.selectedIndex;
+    var file = select.options[index].text;
+    if (file == "==select one==")
+    {
+        alert("请选择文件！");
+        return false;
+    }
+    var url = "http://"+localIP+":8080/showLog?name="+file;
     //window.location.href=url;
     var xhr=new XMLHttpRequest();
     xhr.onreadystatechange=function () {
@@ -27,8 +49,15 @@ function showlog(){
 }
 
 function parselog(){
-    var filename = document.getElementById('filename').value
-    if (filename == "")
+    var select = document.getElementById('files');
+    if (select.options.length == 0)
+    {
+        alert("请先获取文件列表并选择文件！");
+        return false;
+    }
+    var index = select.selectedIndex;
+    var filename = select.options[index].text;
+    if (filename == "==select one==")
     {
         document.getElementById('filename').focus();
         alert("please input filename!");
