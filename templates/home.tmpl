@@ -4,15 +4,16 @@
 <body>
     <p>日志分析系统</p>
     <input type="button" value="查看所有文件" onclick=javascript:showfiles()>
-    <br>
-    <textarea id="files" rows="10" cols="30">
-    </textarea>
     <br><br>
     <font size="3" color="black">输入日志名称</font>
     <br>
     <input type="text" id="filename" />
     <br>
     <input type="button" value="查看日志内容" onclick=javascript:showlog()>
+    <br><br>
+    <font size="3" color="black">内容显示框</font>
+    <br>
+    <textarea id="showBox" rows="10" cols="255"></textarea>
     <br><br>
     <font size="3" color="black">输入解析字段</font>
     <br>
@@ -23,6 +24,10 @@
     <input type="text" id="to" />
     <br>
     <input type="button" value="解析日志" onclick=javascript:parselog()>
+    <br><br>
+    <body>
+    <canvas id="line" width="1800" height="400"></canvas>
+    </body>
     <br>
 </body>
 </html>

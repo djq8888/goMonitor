@@ -1,6 +1,10 @@
 # goMonitor
 analyse data from log and show in charts
-
+## 实现
+### 后端
+go+gin框架
+### 前端
+html+原生js
 ## 需要的环境
 ### go
 参考链接[ubuntu1604安装go1.13](https://blog.csdn.net/u013536232/article/details/104124423)
