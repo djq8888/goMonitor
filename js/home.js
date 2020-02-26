@@ -154,7 +154,6 @@ function lineChart(elem, data) {
                 hgridX = gridWidth * len;
             ctx.moveTo(0, hgridY);
             ctx.lineTo(hgridX, hgridY);
-            ctx.fillText(gridHeight * (4-i), hgridX, hgridY);
         }
         ctx.stroke();
 
@@ -169,7 +168,7 @@ function lineChart(elem, data) {
         // ctx.stroke();
         //绘制x轴标签
         ctx.fillStyle = data.txtSet.txtColor;
-        for (var k = 0; k < len; k += Math.round(len/16)) {
+        for (var k = 0; k < len; k += Math.round(len/16)+1) {
             var txtX = gridWidth * (k + 0.5),
                 txtY = actualHeight + 15;
             ctx.fillText(labels[k], txtX, txtY);
@@ -185,14 +184,24 @@ function lineChart(elem, data) {
             }
         }
         //当最大值大于画布可绘制区域的高度时，对数据进行转化，然后进行画图
+        var realHeight = gridHeight
         if ((4 * gridHeight) < maxValue) {
             for (var i = 0; i < len; i++) {
                 //转换后的数据
                 cData[i] = values[i] * 4 * gridHeight / maxValue;
             }
+            realHeight = maxValue / 4
         } else {
             cData = values;
         }
+        //绘制y轴标签
+        ctx.beginPath();
+        for (var i = 0; i < 5; i++) {
+            var hgridY = gridHeight * i + 20,
+                hgridX = gridWidth * len;
+            ctx.fillText(Math.round(realHeight * (4-i)), hgridX-15, hgridY);
+        }
+        ctx.stroke();
         //绘制折线
         ctx.strokeStyle = data.lineColor;
         ctx.beginPath();
