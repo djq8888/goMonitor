@@ -87,19 +87,21 @@ function parselog(){
             var xAxis = new Array();
             var yAxis = new Array();
             var avg = 0, sum = 0, max = 0;
-            for (var i=0; i<res.length - 1 ;i++)
+            var line = document.getElementById("line");
+            console.log(res.length)
+            for (var i=0, j=0; j<res.length - 1 ;i++, j+=Math.floor(res.length/1800) + 1)
             {
                 xAxis[i] = i + 1;
-                yAxis[i] = Number(res[i+1])
+                yAxis[i] = Number(res[j+1])
                 sum += yAxis[i]
                 if (yAxis[i] > max)
                     max = yAxis[i];
             }
-            avg = sum / (res.length - 1);
+            console.log(xAxis.length)
+            avg = sum / (xAxis.length - 1);
             var statistic = "avg is:" + avg.toString() + "\r\n" + "max is:" + max.toString();
             document.getElementById("showBox").innerHTML = statistic;
-            var line = document.getElementById("line"),
-                datas = {
+            var datas = {
                     labels: xAxis,//标签
                     values: yAxis,//值
                     txtSet: {//绘制文本设置
