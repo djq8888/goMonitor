@@ -3,3 +3,6 @@
 *.exe
 log
 *.monitor
+.idea
+.xml
+.iml
