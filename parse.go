@@ -39,7 +39,7 @@ func parseFromTo(src, from, to string) []string {
 //解析監控文件中的CPU利用率，并存入string数组
 func parseCPU(data string) []string {
 	var res []string
-	datas := strings.Split(data, "\r\n")
+	datas := strings.Split(data, "\n")
 	for _, record := range datas {
 		info := strings.Split(record, " ")
 		res = append(res, info[0])
@@ -50,10 +50,12 @@ func parseCPU(data string) []string {
 //解析監控文件中的內存佔用率，并存入string数组
 func parseMEM(data string) []string {
 	var res []string
-	datas := strings.Split(data, "\r\n")
+	datas := strings.Split(data, "\n")
 	for _, record := range datas {
 		info := strings.Split(record, " ")
-		res = append(res, info[1])
+		if len(info) > 1 {
+			res = append(res, info[1])
+		}
 	}
 	return res
 }

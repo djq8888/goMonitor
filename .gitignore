@@ -2,7 +2,9 @@
 *.log
 *.exe
 log
+monitor
 *.monitor
 .idea
-.xml
-.iml
+*.xml
+*.iml
+*.latest

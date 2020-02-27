@@ -20,7 +20,7 @@ html+原生js
 ### 配置进程监控
 `crontab -e`<br>
 在crontab文件中写入<br>
-`* * * * * sh /path/processMonitor.sh process_name &`<br>
+`* * * * * cd /path/ && sh processMonitor.sh process_name &`<br>
 开启crontab服务<br>
 ubuntu: `service cron start`<br>
 centos: `service crond start`<br>
