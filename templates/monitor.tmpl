@@ -1,0 +1,24 @@
+<!-- templates/analyse.tmpl -->
+<html>
+<script charset="utf-8" src="js/monitor.js"></script>
+<body>
+    <p>性能监控平台</p>
+    <input type="button" value="点击获取进程监控记录" onclick=javascript:showMonitors()>
+    <br>
+    <select name="filelist" id="files"></select>
+    <br><br>
+    <input type="button" value="点击查看CPU利用率" onclick=javascript:showCPU()>
+    <input type="button" value="点击查看內存占用率" onclick=javascript:showMEM()>
+    <br><br>
+    <font size="3" color="black">内容显示框</font>
+    <br>
+    <textarea id="showBox" rows="3" cols="255"></textarea>
+    <br><br>
+    <body>
+    <canvas id="cpu" width="1800" height="300"></canvas>
+    <br>
+    <canvas id="mem" width="1800" height="300"></canvas>
+    </body>
+    <br>
+</body>
+</html>

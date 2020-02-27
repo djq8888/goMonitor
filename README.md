@@ -17,6 +17,13 @@ html+原生js
 `sh setIp.sh your_server_ip`
 ### 链接日志文件夹
 `ln -s your_log_path log`
+### 配置进程监控
+`crontab -e`<br>
+在crontab文件中写入<br>
+`* * * * * sh /path/processMonitor.sh process_name &`<br>
+开启crontab服务<br>
+ubuntu: `service cron start`<br>
+centos: `service crond start`<br>
 ### 编译运行
 `sh build.sh`<br>
 `./monitor`

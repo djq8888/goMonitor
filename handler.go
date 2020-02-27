@@ -11,10 +11,18 @@ func test(c *gin.Context) {
 }
 
 func home(c *gin.Context) {
+	c.HTML(http.StatusOK, "home.tmpl", nil)
+}
+
+func analyse(c *gin.Context) {
 	c.HTML(http.StatusOK, "analyse.tmpl", nil)
 }
 
-func showFiles(c *gin.Context) {
+func monitor(c *gin.Context) {
+	c.HTML(http.StatusOK, "monitor.tmpl", nil)
+}
+
+func showLogs(c *gin.Context) {
 	var res string
 	files, _ := ioutil.ReadDir("log")
 	for _, file := range files {
@@ -23,9 +31,18 @@ func showFiles(c *gin.Context) {
 	c.String(http.StatusOK, res)
 }
 
+func showMonitors(c *gin.Context) {
+	var res string
+	files, _ := ioutil.ReadDir("processMonitor")
+	for _, file := range files {
+		res += file.Name() + "\r\n"
+	}
+	c.String(http.StatusOK, res)
+}
+
 func showLog(c *gin.Context) {
 	name := c.Query("name")
-	if log, err := getLogfile(name); err != nil {
+	if log, err := getLogfile("log/", name); err != nil {
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {
 		c.String(http.StatusOK, log)
@@ -36,10 +53,30 @@ func parseLog(c *gin.Context) {
 	filename := c.Query("name")
 	from := c.Query("from")
 	to := c.DefaultQuery("to", "@")
-	if log, err := getLogfile(filename); err != nil {
+	if log, err := getLogfile("log/", filename); err != nil {
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {
 		res := parseFromTo(log, from, to)
 		c.String(http.StatusOK, "Parse result from %s to %s is:%s", from, to, stringArray2string(res))
+	}
+}
+
+func getCPU(c *gin.Context) {
+	filename := c.Query("name")
+	if data, err := getLogfile("processMonitor/", filename); err != nil {
+		c.String(http.StatusInternalServerError, err.Error())
+	} else {
+		res := parseCPU(data)
+		c.String(http.StatusOK, stringArray2string(res))
+	}
+}
+
+func getMEM(c *gin.Context) {
+	filename := c.Query("name")
+	if data, err := getLogfile("processMonitor/", filename); err != nil {
+		c.String(http.StatusInternalServerError, err.Error())
+	} else {
+		res := parseMEM(data)
+		c.String(http.StatusOK, stringArray2string(res))
 	}
 }

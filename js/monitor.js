@@ -1,54 +1,27 @@
 var localIP = "127.0.0.1"
 
-function showLogs() {
-    var xhr=new XMLHttpRequest();
-            xhr.onreadystatechange=function () {
-                if (xhr.readyState==4){
-                    //alert(xhr.responseText);
-                    //document.getElementById("showBox").innerHTML = xhr.responseText;
-                    var filelist = new Array();
-                    filelist = xhr.responseText.split("\r\n");
-                    var select = document.getElementById('files');
-                    var options = "<option>==select one==</option>";
-                    for(var i=0; i<filelist.length; i++){
-                        options +='<option>'+filelist[i]+'</option>';
-                    }
-                    console.log(options)
-                    select.innerHTML = options;
-                }
-            };
-    xhr.open('get','http://'+localIP+':8080/showLogs');
-    xhr.send(null);
-}
-
-function showlog(){
-    var select = document.getElementById('files');
-    if (select.options.length == 0)
-    {
-        alert("请先获取文件列表并选择文件！");
-        return false;
-    }
-    var index = select.selectedIndex;
-    var file = select.options[index].text;
-    if (file == "==select one==")
-    {
-        alert("请选择文件！");
-        return false;
-    }
-    var url = "http://"+localIP+":8080/showLog?name="+file;
-    //window.location.href=url;
+function showMonitors() {
     var xhr=new XMLHttpRequest();
     xhr.onreadystatechange=function () {
         if (xhr.readyState==4){
             //alert(xhr.responseText);
-            document.getElementById("showBox").innerHTML = xhr.responseText;
+            //document.getElementById("showBox").innerHTML = xhr.responseText;
+            var filelist = new Array();
+            filelist = xhr.responseText.split("\r\n");
+            var select = document.getElementById('files');
+            var options = "<option>==select one==</option>";
+            for(var i=0; i<filelist.length; i++){
+                options +='<option>'+filelist[i]+'</option>';
+            }
+            console.log(options)
+            select.innerHTML = options;
         }
     };
-    xhr.open('get',url);
+    xhr.open('get','http://'+localIP+':8080/showMonitors');
     xhr.send(null);
 }
 
-function parselog(){
+function showCPU(){
     var select = document.getElementById('files');
     if (select.options.length == 0)
     {
@@ -59,24 +32,10 @@ function parselog(){
     var filename = select.options[index].text;
     if (filename == "==select one==")
     {
-        document.getElementById('filename').focus();
-        alert("please input filename!");
+        alert("请先选择文件!");
         return false
     }
-    var from = document.getElementById('from').value
-    if (from == "")
-    {
-        document.getElementById('from').focus();
-        alert("please input from!");
-        return false
-    }
-    var url = "http://"+localIP+":8080/parseLog?name="+filename+"&from="+from;
-    var to = document.getElementById('to').value
-    if (to != "")
-    {
-        url += "&to="+document.getElementById('to').value
-    }
-    //window.location.href=url;
+    var url = "http://"+localIP+":8080/getCPU?name="+filename;
     var xhr = new XMLHttpRequest();
     var res = new Array();
     xhr.onreadystatechange=function () {
@@ -87,7 +46,7 @@ function parselog(){
             var xAxis = new Array();
             var yAxis = new Array();
             var avg = 0, sum = 0, max = 0;
-            var line = document.getElementById("line");
+            var line = document.getElementById("cpu");
             console.log(res.length)
             for (var i=0, j=0; j<res.length - 1 ;i++, j+=Math.floor(res.length/1800) + 1)
             {
@@ -102,27 +61,95 @@ function parselog(){
             var statistic = "avg is:" + avg.toString() + "\r\n" + "max is:" + max.toString();
             document.getElementById("showBox").innerHTML = statistic;
             var datas = {
-                    labels: xAxis,//标签
-                    values: yAxis,//值
-                    txtSet: {//绘制文本设置
-                        txtfont: "14px microsoft yahei",
-                        txtalgin: "center",
-                        txtbaseline: "middle",
-                        txtColor:"#000000"
-                    },
-                    bgSet:{//绘制背景线设置
-                        lineColor:"#C0C0C0",
-                        lineWidth:1,
+                labels: xAxis,//标签
+                values: yAxis,//值
+                txtSet: {//绘制文本设置
+                    txtfont: "14px microsoft yahei",
+                    txtalgin: "center",
+                    txtbaseline: "middle",
+                    txtColor:"#000000"
+                },
+                bgSet:{//绘制背景线设置
+                    lineColor:"#C0C0C0",
+                    lineWidth:1,
 
-                    },
-                    lineColor:"#000000",//折线颜色
-                    circleColor:"black",//折线上原点颜色
-                    yAxis:{//y轴表示什么，及绘制文本的位置
-                        x:50,
-                        y:11,
-                        title:"解析结果折线图"
-                    }
-                };
+                },
+                lineColor:"#000000",//折线颜色
+                circleColor:"black",//折线上原点颜色
+                yAxis:{//y轴表示什么，及绘制文本的位置
+                    x:50,
+                    y:11,
+                    title:"CPU利用率"
+                }
+            };
+            lineChart(line,datas);//画折线图
+        }
+    };
+    xhr.open('get',url);
+    xhr.send(null);
+}
+
+function showMEM(){
+    var select = document.getElementById('files');
+    if (select.options.length == 0)
+    {
+        alert("请先获取文件列表并选择文件！");
+        return false;
+    }
+    var index = select.selectedIndex;
+    var filename = select.options[index].text;
+    if (filename == "==select one==")
+    {
+        alert("请先选择文件!");
+        return false
+    }
+    var url = "http://"+localIP+":8080/getMEM?name="+filename;
+    var xhr = new XMLHttpRequest();
+    var res = new Array();
+    xhr.onreadystatechange=function () {
+        if (xhr.readyState==4){
+            //alert(xhr.responseText);
+            //document.getElementById("files").innerHTML = xhr.responseText;
+            res = xhr.responseText.split("\r\n");
+            var xAxis = new Array();
+            var yAxis = new Array();
+            var avg = 0, sum = 0, max = 0;
+            var line = document.getElementById("mem");
+            console.log(res.length)
+            for (var i=0, j=0; j<res.length - 1 ;i++, j+=Math.floor(res.length/1800) + 1)
+            {
+                xAxis[i] = i + 1;
+                yAxis[i] = Number(res[j+1])
+                sum += yAxis[i]
+                if (yAxis[i] > max)
+                    max = yAxis[i];
+            }
+            console.log(xAxis.length)
+            avg = sum / (xAxis.length - 1);
+            var statistic = "avg is:" + avg.toString() + "\r\n" + "max is:" + max.toString();
+            document.getElementById("showBox").innerHTML = statistic;
+            var datas = {
+                labels: xAxis,//标签
+                values: yAxis,//值
+                txtSet: {//绘制文本设置
+                    txtfont: "14px microsoft yahei",
+                    txtalgin: "center",
+                    txtbaseline: "middle",
+                    txtColor:"#000000"
+                },
+                bgSet:{//绘制背景线设置
+                    lineColor:"#C0C0C0",
+                    lineWidth:1,
+
+                },
+                lineColor:"#000000",//折线颜色
+                circleColor:"black",//折线上原点颜色
+                yAxis:{//y轴表示什么，及绘制文本的位置
+                    x:50,
+                    y:11,
+                    title:"內存占用率"
+                }
+            };
             lineChart(line,datas);//画折线图
         }
     };
@@ -177,32 +204,20 @@ function lineChart(elem, data) {
         }
         ctx.fill();
 
-        //获取画图数据的最大值用于序列换数据
-        var maxValue = 0,
-            cData = new Array();
-        for (var i = 0; i < len; i++) {
-            if (values[i] > maxValue) {
-                maxValue = values[i];
-            }
-        }
-        //当最大值大于画布可绘制区域的高度时，对数据进行转化，然后进行画图
-        var realHeight = gridHeight
-        if ((4 * gridHeight) < maxValue) {
-            for (var i = 0; i < len; i++) {
-                //转换后的数据
-                cData[i] = values[i] * 4 * gridHeight / maxValue;
-            }
-            realHeight = maxValue / 4
-        } else {
-            cData = values;
-        }
         //绘制y轴标签
         ctx.beginPath();
-        for (var i = 0; i < 6; i++) {
+        for (var i = 0; i < 5; i++) {
             var hgridY = gridHeight * i + 20,
                 hgridX = gridWidth * len;
-            ctx.fillText(Math.round(gridHeight * (4-i)), hgridX-15, hgridY);
+            ctx.fillText(Math.round(25 * (4-i)), hgridX-15, hgridY);
         }
+
+        //将数据与坐标对应
+        var cData = new Array();
+        for (var i = 0; i < len; i++) {
+            cData[i] = values[i] / 25 * gridHeight;
+        }
+
         ctx.stroke();
         //绘制折线
         ctx.strokeStyle = data.lineColor;

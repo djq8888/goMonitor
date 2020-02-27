@@ -16,12 +16,22 @@ func main() {
 	r.GET("/test", test)
 	//主页
 	r.GET("/home", home)
-	//展示路径下的所有文件
-	r.GET("/showFiles", showFiles)
-	//展示日志全部内容
+	//日志分析平台
+	r.GET("/analyse", analyse)
+	//性能监控平台
+	r.GET("/monitor", monitor)
+	//获取所有日志
+	r.GET("/showLogs", showLogs)
+	//获取所有监控文件
+	r.GET("/showMonitors", showMonitors)
+	//获取日志全部内容
 	r.GET("/showLog", showLog)
-	//展示日志解析后的内容
+	//获取日志解析后的内容
 	r.GET("/parseLog", parseLog)
+	//获取CPU信息
+	r.GET("/getCPU", getCPU)
+	//获取內存信息
+	r.GET("/getMEM", getMEM)
 
 	r.Run(":8080") // listen and serve on 0.0.0.0:8080
 }
