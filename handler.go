@@ -11,7 +11,7 @@ func test(c *gin.Context) {
 }
 
 func home(c *gin.Context) {
-	c.HTML(http.StatusOK, "home.tmpl", nil)
+	c.HTML(http.StatusOK, "analyse.tmpl", nil)
 }
 
 func showFiles(c *gin.Context) {
