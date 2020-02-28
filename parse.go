@@ -7,7 +7,7 @@ import (
 )
 
 //打开日志文件并以string返回文件全部内容
-func getLogfile(path, filename string) (string, error) {
+func getFile(path, filename string) (string, error) {
 	data, err := ioutil.ReadFile(path+filename)
 	if err != nil {
 		fmt.Println("File reading error: ", err)

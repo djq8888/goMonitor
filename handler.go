@@ -42,7 +42,7 @@ func showMonitors(c *gin.Context) {
 
 func showLog(c *gin.Context) {
 	name := c.Query("name")
-	if log, err := getLogfile("log/", name); err != nil {
+	if log, err := getFile("log/", name); err != nil {
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {
 		c.String(http.StatusOK, log)
@@ -53,7 +53,7 @@ func parseLog(c *gin.Context) {
 	filename := c.Query("name")
 	from := c.Query("from")
 	to := c.DefaultQuery("to", "@")
-	if log, err := getLogfile("log/", filename); err != nil {
+	if log, err := getFile("log/", filename); err != nil {
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {
 		res := parseFromTo(log, from, to)
@@ -63,7 +63,7 @@ func parseLog(c *gin.Context) {
 
 func getCPU(c *gin.Context) {
 	filename := c.Query("name")
-	if data, err := getLogfile("processMonitor/", filename); err != nil {
+	if data, err := getFile("processMonitor/", filename); err != nil {
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {
 		res := parseCPU(data)
@@ -73,7 +73,7 @@ func getCPU(c *gin.Context) {
 
 func getMEM(c *gin.Context) {
 	filename := c.Query("name")
-	if data, err := getLogfile("processMonitor/", filename); err != nil {
+	if data, err := getFile("processMonitor/", filename); err != nil {
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {
 		res := parseMEM(data)
