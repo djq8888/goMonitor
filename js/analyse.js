@@ -201,7 +201,7 @@ function lineChart(elem, data) {
         for (var i = 0; i < 6; i++) {
             var hgridY = gridHeight * i + 20,
                 hgridX = gridWidth * len;
-            ctx.fillText(Math.round(gridHeight * (4-i)), hgridX-15, hgridY);
+            ctx.fillText(Math.round(realHeight * (4-i)), hgridX-15, hgridY);
         }
         ctx.stroke();
         //绘制折线
