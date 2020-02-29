@@ -28,6 +28,8 @@ func main() {
 	r.GET("/showLog", showLog)
 	//获取日志解析后的内容
 	r.GET("/parseLog", parseLog)
+	//获取Qps信息
+	r.GET("/getQps", getQps)
 	//获取CPU信息
 	r.GET("/getCPU", getCPU)
 	//获取內存信息

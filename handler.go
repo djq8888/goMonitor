@@ -61,6 +61,19 @@ func parseLog(c *gin.Context) {
 	}
 }
 
+func getQps(c *gin.Context) {
+	filename := c.Query("name")
+	from := c.Query("from")
+	to := c.DefaultQuery("to", "@")
+	if log, err := getFile("log/", filename); err != nil {
+		c.String(http.StatusInternalServerError, err.Error())
+	} else {
+		res := parseFromTo(log, from, to)
+		qps := parseQps(res)
+		c.String(http.StatusOK, "Qps from %s to %s is:%s", from, to, stringArray2string(qps))
+	}
+}
+
 func getCPU(c *gin.Context) {
 	filename := c.Query("name")
 	if data, err := getFile("processMonitor/", filename); err != nil {

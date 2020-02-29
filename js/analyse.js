@@ -48,6 +48,88 @@ function showlog(){
     xhr.send(null);
 }
 
+function parseQps(){
+    var select = document.getElementById('files');
+    if (select.options.length == 0)
+    {
+        alert("请先获取文件列表并选择文件！");
+        return false;
+    }
+    var index = select.selectedIndex;
+    var filename = select.options[index].text;
+    if (filename == "==select one==")
+    {
+        document.getElementById('filename').focus();
+        alert("please input filename!");
+        return false
+    }
+    var from = document.getElementById('from').value
+    if (from == "")
+    {
+        document.getElementById('from').focus();
+        alert("please input from!");
+        return false
+    }
+    var url = "http://"+localIP+":8080/getQps?name="+filename+"&from="+from;
+    var to = document.getElementById('to').value
+    if (to != "")
+    {
+        url += "&to="+document.getElementById('to').value
+    }
+    //window.location.href=url;
+    var xhr = new XMLHttpRequest();
+    var res = new Array();
+    xhr.onreadystatechange=function () {
+        if (xhr.readyState==4){
+            //alert(xhr.responseText);
+            //document.getElementById("files").innerHTML = xhr.responseText;
+            res = xhr.responseText.split("\r\n");
+            var xAxis = new Array();
+            var yAxis = new Array();
+            var avg = 0, sum = 0, max = 0;
+            var line = document.getElementById("line");
+            console.log(res.length)
+            for (var i=0, j=0; j<res.length - 1 ;i++, j+=Math.floor(res.length/1800) + 1)
+            {
+                xAxis[i] = i + 1;
+                yAxis[i] = Number(res[j+1])
+                sum += yAxis[i]
+                if (yAxis[i] > max)
+                    max = yAxis[i];
+            }
+            console.log(xAxis.length)
+            avg = sum / xAxis.length;
+            var statistic = "avg is:" + avg.toString() + "\r\n" + "max is:" + max.toString();
+            document.getElementById("showBox").innerHTML = statistic;
+            var datas = {
+                labels: xAxis,//标签
+                values: yAxis,//值
+                txtSet: {//绘制文本设置
+                    txtfont: "14px microsoft yahei",
+                    txtalgin: "center",
+                    txtbaseline: "middle",
+                    txtColor:"#000000"
+                },
+                bgSet:{//绘制背景线设置
+                    lineColor:"#C0C0C0",
+                    lineWidth:1,
+
+                },
+                lineColor:"#000000",//折线颜色
+                circleColor:"black",//折线上原点颜色
+                yAxis:{//y轴表示什么，及绘制文本的位置
+                    x:50,
+                    y:11,
+                    title:"Qps折线图"
+                }
+            };
+            lineChart(line,datas);//画折线图
+        }
+    };
+    xhr.open('get',url);
+    xhr.send(null);
+}
+
 function parselog(){
     var select = document.getElementById('files');
     if (select.options.length == 0)
@@ -238,6 +320,5 @@ function lineChart(elem, data) {
         //绘制y轴代表什么
         ctx.fillText(data.yAxis.title, data.yAxis.x, data.yAxis.y);
         ctx.fill();
-
     }
 }

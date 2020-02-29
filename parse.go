@@ -36,6 +36,24 @@ func parseFromTo(src, from, to string) []string {
 	return res
 }
 
+//将时间戳序列，统计为qps，并存入string数组
+func parseQps(data []string) []string {
+	timestamp := stringArray2int64Array(data)
+	start := timestamp[0]
+	var qps []int
+	i := 0
+	qps = append(qps, 0)
+	for _, ts := range timestamp {
+		if ts > (start + 1000) {
+			start += 1000
+			qps = append(qps, 0)
+			i++
+		}
+		qps[i]++
+	}
+	return intArray2stringArray(qps)
+}
+
 //解析監控文件中的CPU利用率，并存入string数组
 func parseCPU(data string) []string {
 	var res []string
