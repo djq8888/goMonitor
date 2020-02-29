@@ -3,7 +3,9 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
+	"strconv"
 	"strings"
+	"unsafe"
 )
 
 //打开日志文件并以string返回文件全部内容
@@ -34,6 +36,13 @@ func parseFromTo(src, from, to string) []string {
 		}
 	}
 	return res
+}
+
+//解析文本中所有from到to中间的內容作为开始时间，from2:to2之间内容作为结束时间，并返回时间差
+func parseInterval(src, from, to, from2, to2 string) []string {
+	begin := parse2map(src, from, to)
+	interval := findInterval(begin, src, from2, to2)
+	return intArray2stringArray(interval)
 }
 
 //将时间戳序列，统计为qps，并存入string数组
@@ -76,4 +85,57 @@ func parseMEM(data string) []string {
 		}
 	}
 	return res
+}
+
+//将from'value','key'to解析为map[key]value
+func parse2map(src, from, to string) map[int]int64 {
+	var resMap map[int]int64
+	resMap = make(map[int]int64)
+	srcLen := len(src)
+	destLen := len(from)
+	start := 0
+	for loc := 0; loc < srcLen;  {
+		if loc = strings.Index(src[start:], from); loc > -1 {
+			if endLoc := strings.Index(src[start + loc:], to); endLoc > -1 {
+				tmp := src[start + loc + destLen : start + loc + endLoc]
+				res := strings.Split(tmp, ",")
+				res_key, _ := strconv.Atoi(res[1])
+				res_value, _ := strconv.ParseInt(res[0], 10, 64)
+				resMap[res_key] = res_value
+				start += loc + endLoc
+			}
+		} else {
+			break
+		}
+	}
+	return resMap
+}
+
+//将from'value','key'to解析为map[key]value，并与begin中对应key的value相减，将差值存为int数组
+func findInterval(begin map[int]int64, src, from, to string) []int {
+	var resArray []int
+	srcLen := len(src)
+	destLen := len(from)
+	start := 0
+	for loc := 0; loc < srcLen;  {
+		if loc = strings.Index(src[start:], from); loc > -1 {
+			if endLoc := strings.Index(src[start + loc:], to); endLoc > -1 {
+				tmp := src[start + loc + destLen : start + loc + endLoc]
+				res := strings.Split(tmp, ",")
+				res_issi, _ := strconv.Atoi(res[1])
+				res_time, _ := strconv.ParseInt(res[0], 10, 64)
+				if v_begin, ok:= begin[res_issi]; ok {
+					interval := res_time - v_begin
+					if interval > 0 {
+						//fmt.Println("error:", res_issi, v_begin, res_time)
+						resArray = append(resArray, *(*int)(unsafe.Pointer(&interval)))
+					}
+				}
+				start += loc + endLoc
+			}
+		} else {
+			break
+		}
+	}
+	return resArray
 }

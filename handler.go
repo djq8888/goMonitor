@@ -53,10 +53,17 @@ func parseLog(c *gin.Context) {
 	filename := c.Query("name")
 	from := c.Query("from")
 	to := c.DefaultQuery("to", "@")
+	from2 := c.DefaultQuery("from2", "@")
+	to2 := c.DefaultQuery("to2", "@")
 	if log, err := getFile("log/", filename); err != nil {
 		c.String(http.StatusInternalServerError, err.Error())
 	} else {
-		res := parseFromTo(log, from, to)
+		var res []string
+		if from2 == "@" {
+			res = parseFromTo(log, from, to)
+		} else {
+			res = parseInterval(log, from, to, from2, to2)
+		}
 		c.String(http.StatusOK, "Parse result from %s to %s is:%s", from, to, stringArray2string(res))
 	}
 }

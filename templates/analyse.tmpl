@@ -13,13 +13,23 @@
     <br>
     <textarea id="showBox" rows="10" cols="255"></textarea>
     <br><br>
-    <font size="3" color="black">输入解析字段</font>
+    <table border="1">
+    <tr>
+        <td title="如果只输入from和to，将解析日志中所有from:to之间的内容;
+如果输入from2和to2，将解析日志中from:to之间的内容作为开始时间，from2:to2之间内容作为结束时间，并展示时间差;
+解析为qps只需要输入from和to，from和to之间应为时间戳（精确到毫秒）">输入解析内容</td>
+    </tr>
+    </table>
     <br>
     <font size="3" color="black">from</font>
     <input type="text" id="from" />
-    <br>
     <font size="3" color="black">to</font>
     <input type="text" id="to" />
+    <br>
+    <font size="3" color="black">from2</font>
+    <input type="text" id="from2" />
+    <font size="3" color="black">to2</font>
+    <input type="text" id="to2" />
     <br>
     <input type="button" value="解析为数据" onclick=javascript:parselog()>
     <input type="button" value="解析为qps" onclick=javascript:parseQps()>

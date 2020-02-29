@@ -156,7 +156,17 @@ function parselog(){
     var to = document.getElementById('to').value
     if (to != "")
     {
-        url += "&to="+document.getElementById('to').value
+        url += "&to="+to
+    }
+    var from2 = document.getElementById('from2').value
+    if (from2 != "")
+    {
+        url += "&from2="+from2
+    }
+    var to2 = document.getElementById('to2').value
+    if (to2 != "")
+    {
+        url += "&to2="+to2
     }
     //window.location.href=url;
     var xhr = new XMLHttpRequest();
@@ -180,7 +190,7 @@ function parselog(){
                     max = yAxis[i];
             }
             console.log(xAxis.length)
-            avg = sum / (xAxis.length - 1);
+            avg = sum / xAxis.length;
             var statistic = "avg is:" + avg.toString() + "\r\n" + "max is:" + max.toString();
             document.getElementById("showBox").innerHTML = statistic;
             var datas = {
