@@ -53,7 +53,7 @@ func parseQps(data []string) []string {
 	i := 0
 	qps = append(qps, 0)
 	for _, ts := range timestamp {
-		if ts > (start + 1000) {
+		for ts > (start + 1000) {
 			start += 1000
 			qps = append(qps, 0)
 			i++

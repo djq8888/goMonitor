@@ -14,7 +14,7 @@ html+原生js
 如果需要进程CPU和内存监控，则需要系统开启crontab服务
 ## 部署方式
 ### 修改ip
-`sh setIp.sh your_server_ip`
+`sh setIp.sh your_server_ip your_listen_port`
 ### 链接日志文件夹
 `ln -s your_log_path log`
 ### 配置进程监控
